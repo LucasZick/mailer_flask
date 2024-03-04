@@ -1,8 +1,10 @@
 from flask import Flask, request
+from flask_cors import CORS
 from src.controllers.email import EmailController
 from src import config
 
 app = Flask(__name__)
+CORS(app)#, resources={r"/sendEmail": {"origins": config.ALLOWED_CORS}})
 
 @app.route('/sendEmail', methods=['POST'])
 def hello():

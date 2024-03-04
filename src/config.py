@@ -12,3 +12,5 @@ MESSAGE = {
     'OWNER_EMAIL': environ.get('OWNER_EMAIL'),
     'PASSWORD': environ.get('PASSWORD')
 }
+
+ALLOWED_CORS = environ.get("ALLOWED_CORS", "foo.com")

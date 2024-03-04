@@ -18,6 +18,8 @@ ENV SENDER_EMAIL 'foo@bar.com'
 ENV OWNER_EMAIL 'bar@foo.com'
 ENV PASSWORD 'PASSWORD'
 
+ENV ALLOWED_CORS 'foo.com.br'
+
 EXPOSE 5000
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
