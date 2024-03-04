@@ -1,6 +1,6 @@
 from os import environ
 
-DEBUG = environ.get('DEBUG', False)
+DEBUG = bool(environ.get('DEBUG', 'False'))
 
 EMAIL = {
     "SMTP_SERVER": environ.get("SMTP_SERVER", "smtp.gmail.com"),
