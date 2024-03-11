@@ -10,7 +10,7 @@ class MessageController:
         html = MessageController.generate_html_owner(message_info)
         message = MIMEMultipart("alternative", None, [MIMEText(html, 'html')])
         message["From"] = sender_email
-        message["To"] = ','.join(config.MESSAGE['OWNER_EMAIL'].split(','))
+        message["To"] = config.MESSAGE['OWNER_EMAIL']
         message["Subject"] = f"You have a new message from {message_info.name}"
         message.attach(MIMEText(html, "html"))
         msg_body = message.as_string()

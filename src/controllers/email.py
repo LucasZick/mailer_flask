@@ -11,7 +11,7 @@ class EmailController:
     def send_message(message_data):
         message_info = MessageModel(name=message_data['name'], email=message_data['email'], message=message_data['message'], language=message_data['language'])
         smtp_server = config.EMAIL['SMTP_SERVER']
-        port = config.EMAIL['PORT']
+        port = config.EMAIL['SMTP_PORT']
         sender_email = config.MESSAGE['SENDER_EMAIL']
         owner_email = config.MESSAGE['OWNER_EMAIL']
         password = config.MESSAGE['PASSWORD']
@@ -20,14 +20,14 @@ class EmailController:
             if config.DEBUG:
                 print('Connecting to the server and starting sending')
             server = EmailController.connect(sender_email, password, smtp_server, port, context)
-            message_owner = MessageController.generate_message_owner(sender_email, message_info)
             message_contactant = MessageController.generate_message_contactant(sender_email, message_info)
-            server.sendmail(sender_email, owner_email, message_owner)
-            if config.DEBUG:
-                print(f"Notified {owner_email} about this message")
+            message_owner = MessageController.generate_message_owner(sender_email, message_info)
             server.sendmail(sender_email, message_info.email, message_contactant)
             if config.DEBUG:
                 print(f"{message_info.name} was notified that you received his message")
+            server.sendmail(sender_email, owner_email, message_owner)
+            if config.DEBUG:
+                print(f"Notified {owner_email} about this message")
 
         except Exception as err:
             print(f'Job function failure: {err}')
@@ -39,7 +39,7 @@ class EmailController:
     @staticmethod
     def connect(email, password, smtp_server, port, context):
         try:
-            server = smtplib.SMTP(smtp_server, port)
+            server = smtplib.SMTP(smtp_server, port, timeout=20.0)
             server.ehlo()
             server.starttls(context=context)
             server.ehlo()
